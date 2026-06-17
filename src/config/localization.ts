@@ -823,6 +823,17 @@ import { Popup } from '../ui/popup';
             en_US: "🌐"
         },
 
+        click_to_copy_title: {
+            zh_CN: "点击复制标题",
+            zh_TW: "點擊複製標題",
+            en_US: "Click to copy title"
+        },
+
+        click_to_copy: {
+            zh_CN: "点击复制",
+            zh_TW: "點擊複製",
+            en_US: "Click to copy"
+        },
 
         get: function (key: any) {
             let lang = navigator.language.toLowerCase();

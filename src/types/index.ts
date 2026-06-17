@@ -15,13 +15,39 @@ export interface DLSiteWork {
     isGirls?: boolean;
 }
 
+export interface WorkInfo {
+    rj: string;
+    img?: string;
+    title?: string;
+    circle?: string;
+    circleId?: string;
+    date?: string;
+    update?: string;
+    rating?: string;
+    tags?: { text: string; class?: string; onClick?: () => void }[];
+    scenario?: string;
+    illustration?: string;
+    cv?: string;
+    music?: string;
+    filesize?: string;
+    dateAnnounce?: string;
+    is_announce?: boolean;
+}
+
+export interface WorkPromiseReturnData {
+    api?: any;
+    api2?: any;
+    cien?: any;
+    cien2?: any;
+    trans?: any;
+}
+
 export interface PopupState {
     display: boolean;
     rjCode: string;
     isParent?: boolean;
-    mouseX: number;
-    mouseY: number;
+    x: number;
+    y: number;
     found: boolean;
     loading: boolean;
-    pinned: boolean;
 }

@@ -76,10 +76,7 @@ export const Parser = {
 
         e.setAttribute(RJCODE_ATTRIBUTE, rjCode.toUpperCase());
         e.setAttribute("voicelink-linkified", "true");
-        e.addEventListener("mouseover", Popup.over);
-        e.addEventListener("mouseout", Popup.out);
-        e.addEventListener("mousemove", Popup.move);
-        e.addEventListener("keydown", Popup.keydown);
+        e.addEventListener("click", Popup.click);
         return e;
     },
 
@@ -100,10 +97,7 @@ export const Parser = {
 
         e.classList.add(VOICELINK_CLASS);
         e.setAttribute(RJCODE_ATTRIBUTE, rj.toUpperCase());
-        e.addEventListener("mouseover", Popup.over);
-        e.addEventListener("mouseout", Popup.out);
-        e.addEventListener("mousemove", Popup.move);
-        e.addEventListener("keydown", Popup.keydown);
+        e.addEventListener("click", Popup.click);
     },
 
     linkify: function (textNode: Text) {
@@ -170,18 +164,12 @@ export const Parser = {
 
     rebindEvents: function (elem: HTMLElement) {
         if (elem.nodeName === "A") {
-            elem.addEventListener("mouseover", Popup.over);
-            elem.addEventListener("mouseout", Popup.out);
-            elem.addEventListener("mousemove", Popup.move);
-            elem.addEventListener("keydown", Popup.keydown);
+            elem.addEventListener("click", Popup.click);
         } else {
             const voicelinks = elem.querySelectorAll("." + VOICELINK_CLASS);
             for (let i = 0, j = voicelinks.length; i < j; i++) {
                 const voicelink = voicelinks[i] as HTMLElement;
-                voicelink.addEventListener("mouseover", Popup.over);
-                voicelink.addEventListener("mouseout", Popup.out);
-                voicelink.addEventListener("mousemove", Popup.move);
-                voicelink.addEventListener("keydown", Popup.keydown);
+                voicelink.addEventListener("click", Popup.click);
             }
         }
     },

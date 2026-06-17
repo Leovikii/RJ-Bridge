@@ -13,10 +13,6 @@ export function init() {
     }
 
     if (!isInit) {
-        const style = document.createElement("style");
-        style.innerHTML = Csp.createHTML(POPUP_CSS);
-        document.head.appendChild(style);
-
         isInit = true;
     }
 
