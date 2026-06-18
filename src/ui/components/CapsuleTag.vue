@@ -1,5 +1,5 @@
 <template>
-  <span class="dlsite-plus-capsule" :class="`theme-${theme || 'default'}`">
+  <span class="rj-bridge-capsule" :class="`theme-${theme || 'default'}`">
     {{ text }}
   </span>
 </template>
@@ -12,7 +12,7 @@ defineProps<{
 </script>
 
 <style scoped>
-.dlsite-plus-capsule {
+.rj-bridge-capsule {
   display: inline-block;
   padding: 4px 10px;
   border-radius: 6px;

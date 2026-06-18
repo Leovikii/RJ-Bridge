@@ -1,9 +1,9 @@
 <template>
-  <div class="dlsite-plus-tags-container" v-if="tags && tags.length > 0">
+  <div class="rj-bridge-tags-container" v-if="tags && tags.length > 0">
     <span 
       v-for="(tag, index) in tags" 
       :key="index" 
-      class="dlsite-plus-tag" 
+      class="rj-bridge-tag" 
       :class="[tag.class, tag.small ? 'is-small' : '']"
       @click="tag.onClick ? tag.onClick() : null"
       :style="tag.onClick ? 'cursor: pointer;' : ''"
@@ -20,7 +20,7 @@ defineProps<{
 </script>
 
 <style scoped>
-.dlsite-plus-tags-container {
+.rj-bridge-tags-container {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -28,7 +28,7 @@ defineProps<{
   margin-bottom: 8px;
 }
 
-.dlsite-plus-tag {
+.rj-bridge-tag {
   padding: 2px 8px;
   border-radius: 4px;
   background-color: rgba(255, 255, 255, 0.15);
@@ -39,7 +39,7 @@ defineProps<{
   backdrop-filter: blur(4px);
 }
 
-.dlsite-plus-tag.is-small {
+.rj-bridge-tag.is-small {
   font-size: 0.75em;
   padding: 2px 6px;
 }

@@ -1,5 +1,5 @@
 {
-  "name": "dlsite-plus",
+  "name": "rj-bridge",
   "version": "1.0.0",
   "description": "",
   "main": "RJ2Link.js",
@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "devDependencies": {
     "@types/node": "^25.9.3",

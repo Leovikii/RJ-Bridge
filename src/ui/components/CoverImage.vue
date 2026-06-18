@@ -1,5 +1,5 @@
 <template>
-  <div class="dlsite-plus-img-container">
+  <div class="rj-bridge-img-container">
     <img 
       v-if="src" 
       :src="src" 
@@ -7,8 +7,8 @@
       @mouseleave="isHovered = false"
       :class="{ 'is-hovered': isHovered }"
     />
-    <div v-else class="dlsite-plus-img-placeholder">
-      <div class="dlsite-plus-img-skeleton"></div>
+    <div v-else class="rj-bridge-img-placeholder">
+      <div class="rj-bridge-img-skeleton"></div>
     </div>
   </div>
 </template>
@@ -24,7 +24,7 @@ const isHovered = ref(false);
 </script>
 
 <style scoped>
-.dlsite-plus-img-container {
+.rj-bridge-img-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,7 +36,7 @@ const isHovered = ref(false);
   overflow: hidden;
 }
 
-.dlsite-plus-img-container img {
+.rj-bridge-img-container img {
   max-width: 100%;
   max-height: 350px;
   object-fit: contain;
@@ -44,11 +44,11 @@ const isHovered = ref(false);
   transition: transform 0.3s ease;
 }
 
-.dlsite-plus-img-container img.is-hovered {
+.rj-bridge-img-container img.is-hovered {
   transform: scale(1.05);
 }
 
-.dlsite-plus-img-placeholder {
+.rj-bridge-img-placeholder {
   width: 100%;
   height: 100%;
   min-height: 200px;
@@ -57,7 +57,7 @@ const isHovered = ref(false);
   justify-content: center;
 }
 
-.dlsite-plus-img-skeleton {
+.rj-bridge-img-skeleton {
   width: 50px;
   height: 50px;
   border-radius: 50%;

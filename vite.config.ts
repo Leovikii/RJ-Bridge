@@ -10,22 +10,19 @@ export default defineConfig({
     monkey({
       entry: 'src/main.ts',
       userscript: {
-        name: 'DLsite Plus',
+        name: 'RJ-Bridge',
         namespace: 'Leovikii',
         author: 'Leovikii',
+        license: 'MIT',
         description: {
-          '': 'Extract RJ codes on South Plus forums, automatically fetch and display DLSite work information.',
-          'zh': '在南+论坛提取RJ号，自动获取并显示DLSite作品信息。',
-          'zh-CN': '在南+论坛提取RJ号，自动获取并显示DLSite作品信息。'
+          '': 'Extract RJ codes on South Plus forums, automatically fetch and display DLSite work information, and provide ASMR ONE links.',
+          'zh': '在南+论坛提取并高亮RJ号，自动获取并显示DLsite元数据，并提供ASMR ONE在线试听资源链接。',
+          'zh-CN': '在南+论坛提取并高亮RJ号，自动获取并显示DLsite元数据，并提供ASMR ONE在线试听资源链接。'
         },
         match: [
           '*://*.south-plus.net/*',
           '*://*.spring-plus.net/*',
           '*://*.level-plus.net/*',
-          '*://*.imoutolove.me/*'
-        ],
-        require: [
-          'https://greasyfork.org/scripts/474128-dlsite-plus/code/DLsite%20Plus.user.js'
         ],
         icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='64' y2='64' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0%25' stop-color='%23f472b6'/%3E%3Cstop offset='100%25' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-weight='900' font-size='32' fill='%23fff' text-anchor='middle' letter-spacing='1'%3ERJ%3C/text%3E%3C/svg%3E",
         version: '1.0.0',

@@ -8,16 +8,16 @@ let metaElement: HTMLMetaElement | null = null;
 
 const darkThemeCss = `
   /* 1. 全局背景深色化 */
-  html.dlsite-dark-mode,
-  html.dlsite-dark-mode body,
-  html.dlsite-dark-mode #wrap,
-  html.dlsite-dark-mode .wrap,
-  html.dlsite-dark-mode #main,
-  html.dlsite-dark-mode .main,
-  html.dlsite-dark-mode .main-wrap,
-  html.dlsite-dark-mode #header,
-  html.dlsite-dark-mode .header,
-  html.dlsite-dark-mode #u-wrap2 {
+  html.rj-bridge-dark-mode,
+  html.rj-bridge-dark-mode body,
+  html.rj-bridge-dark-mode #wrap,
+  html.rj-bridge-dark-mode .wrap,
+  html.rj-bridge-dark-mode #main,
+  html.rj-bridge-dark-mode .main,
+  html.rj-bridge-dark-mode .main-wrap,
+  html.rj-bridge-dark-mode #header,
+  html.rj-bridge-dark-mode .header,
+  html.rj-bridge-dark-mode #u-wrap2 {
     background: #121212 !important;
     background-color: #121212 !important;
     background-image: none !important;
@@ -25,32 +25,32 @@ const darkThemeCss = `
   }
 
   /* 2. 论坛主要表格和容器深色化 */
-  html.dlsite-dark-mode .t_table,
-  html.dlsite-dark-mode .t_table td,
-  html.dlsite-dark-mode .t_table th,
-  html.dlsite-dark-mode .f_one,
-  html.dlsite-dark-mode .f_two,
-  html.dlsite-dark-mode .t_one,
-  html.dlsite-dark-mode .t_two,
-  html.dlsite-dark-mode .r_one,
-  html.dlsite-dark-mode .r_two,
-  html.dlsite-dark-mode .tr3 td,
-  html.dlsite-dark-mode .tr2 td,
-  html.dlsite-dark-mode .tr1 td,
-  html.dlsite-dark-mode .tpc_content,
-  html.dlsite-dark-mode .read_t,
-  html.dlsite-dark-mode .read_m,
-  html.dlsite-dark-mode .t5,
-  html.dlsite-dark-mode #u-sidebar,
-  html.dlsite-dark-mode #u-content,
-  html.dlsite-dark-mode #u-contentmain,
-  html.dlsite-dark-mode #u-contentside,
-  html.dlsite-dark-mode .u-table,
-  html.dlsite-dark-mode .u-table td,
-  html.dlsite-dark-mode .u-table th,
-  html.dlsite-dark-mode .bgA,
-  html.dlsite-dark-mode #u-top,
-  html.dlsite-dark-mode #u-top-nav {
+  html.rj-bridge-dark-mode .t_table,
+  html.rj-bridge-dark-mode .t_table td,
+  html.rj-bridge-dark-mode .t_table th,
+  html.rj-bridge-dark-mode .f_one,
+  html.rj-bridge-dark-mode .f_two,
+  html.rj-bridge-dark-mode .t_one,
+  html.rj-bridge-dark-mode .t_two,
+  html.rj-bridge-dark-mode .r_one,
+  html.rj-bridge-dark-mode .r_two,
+  html.rj-bridge-dark-mode .tr3 td,
+  html.rj-bridge-dark-mode .tr2 td,
+  html.rj-bridge-dark-mode .tr1 td,
+  html.rj-bridge-dark-mode .tpc_content,
+  html.rj-bridge-dark-mode .read_t,
+  html.rj-bridge-dark-mode .read_m,
+  html.rj-bridge-dark-mode .t5,
+  html.rj-bridge-dark-mode #u-sidebar,
+  html.rj-bridge-dark-mode #u-content,
+  html.rj-bridge-dark-mode #u-contentmain,
+  html.rj-bridge-dark-mode #u-contentside,
+  html.rj-bridge-dark-mode .u-table,
+  html.rj-bridge-dark-mode .u-table td,
+  html.rj-bridge-dark-mode .u-table th,
+  html.rj-bridge-dark-mode .bgA,
+  html.rj-bridge-dark-mode #u-top,
+  html.rj-bridge-dark-mode #u-top-nav {
     background: #1e1e1e !important;
     background-color: #1e1e1e !important;
     border-color: #333 !important;
@@ -58,16 +58,16 @@ const darkThemeCss = `
   }
 
   /* 3. 表头和标题栏稍微亮一点点，增加层次感 */
-  html.dlsite-dark-mode .h,
-  html.dlsite-dark-mode .h td,
-  html.dlsite-dark-mode .h th,
-  html.dlsite-dark-mode .h b,
-  html.dlsite-dark-mode .h span,
-  html.dlsite-dark-mode #u-top-nav ul.b li,
-  html.dlsite-dark-mode .pages,
-  html.dlsite-dark-mode .pagesone,
-  html.dlsite-dark-mode .u-h1,
-  html.dlsite-dark-mode .u-h5 {
+  html.rj-bridge-dark-mode .h,
+  html.rj-bridge-dark-mode .h td,
+  html.rj-bridge-dark-mode .h th,
+  html.rj-bridge-dark-mode .h b,
+  html.rj-bridge-dark-mode .h span,
+  html.rj-bridge-dark-mode #u-top-nav ul.b li,
+  html.rj-bridge-dark-mode .pages,
+  html.rj-bridge-dark-mode .pagesone,
+  html.rj-bridge-dark-mode .u-h1,
+  html.rj-bridge-dark-mode .u-h5 {
     background: #2a2a2a !important;
     background-color: #2a2a2a !important;
     border-color: #444 !important;
@@ -75,35 +75,35 @@ const darkThemeCss = `
   }
 
   /* 4. 链接颜色调整为适合暗底的亮蓝色 */
-  html.dlsite-dark-mode a {
+  html.rj-bridge-dark-mode a {
     color: #60a5fa !important;
   }
-  html.dlsite-dark-mode a:hover {
+  html.rj-bridge-dark-mode a:hover {
     color: #93c5fd !important;
   }
 
   /* 5. 修复用户发帖时经常带的内联白色背景和黑色字体 */
-  html.dlsite-dark-mode .tpc_content font[color="#000000"],
-  html.dlsite-dark-mode .tpc_content font[color="black"],
-  html.dlsite-dark-mode .tpc_content [style*="color: #000"],
-  html.dlsite-dark-mode .tpc_content [style*="color: black"],
-  html.dlsite-dark-mode .tpc_content [style*="color:#000"] {
+  html.rj-bridge-dark-mode .tpc_content font[color="#000000"],
+  html.rj-bridge-dark-mode .tpc_content font[color="black"],
+  html.rj-bridge-dark-mode .tpc_content [style*="color: #000"],
+  html.rj-bridge-dark-mode .tpc_content [style*="color: black"],
+  html.rj-bridge-dark-mode .tpc_content [style*="color:#000"] {
     color: #d1d5db !important;
   }
   
   /* 6. 修复内联白色背景和各种白色区块 (如购买框、引用框) */
-  html.dlsite-dark-mode [style*="background-color: #fff"],
-  html.dlsite-dark-mode [style*="background-color:#fff"],
-  html.dlsite-dark-mode [style*="background-color: white"],
-  html.dlsite-dark-mode [style*="background-color:#ffffff"],
-  html.dlsite-dark-mode [style*="background: #fff"],
-  html.dlsite-dark-mode [style*="background: white"],
-  html.dlsite-dark-mode [style*="background:#fff"],
-  html.dlsite-dark-mode [bgcolor="#ffffff"],
-  html.dlsite-dark-mode [bgcolor="#fff"],
-  html.dlsite-dark-mode blockquote,
-  html.dlsite-dark-mode .blockquote,
-  html.dlsite-dark-mode .quote {
+  html.rj-bridge-dark-mode [style*="background-color: #fff"],
+  html.rj-bridge-dark-mode [style*="background-color:#fff"],
+  html.rj-bridge-dark-mode [style*="background-color: white"],
+  html.rj-bridge-dark-mode [style*="background-color:#ffffff"],
+  html.rj-bridge-dark-mode [style*="background: #fff"],
+  html.rj-bridge-dark-mode [style*="background: white"],
+  html.rj-bridge-dark-mode [style*="background:#fff"],
+  html.rj-bridge-dark-mode [bgcolor="#ffffff"],
+  html.rj-bridge-dark-mode [bgcolor="#fff"],
+  html.rj-bridge-dark-mode blockquote,
+  html.rj-bridge-dark-mode .blockquote,
+  html.rj-bridge-dark-mode .quote {
     background: #2d2d2d !important;
     background-color: #2d2d2d !important;
     border-color: #444 !important;
@@ -111,10 +111,10 @@ const darkThemeCss = `
   }
 
   /* 7. 输入框和文本域深色化 */
-  html.dlsite-dark-mode input[type="text"],
-  html.dlsite-dark-mode input[type="password"],
-  html.dlsite-dark-mode textarea,
-  html.dlsite-dark-mode select {
+  html.rj-bridge-dark-mode input[type="text"],
+  html.rj-bridge-dark-mode input[type="password"],
+  html.rj-bridge-dark-mode textarea,
+  html.rj-bridge-dark-mode select {
     background: #2a2a2a !important;
     background-color: #2a2a2a !important;
     color: #e5e7eb !important;
@@ -171,7 +171,7 @@ function toggleDarkMode() {
 }
 
 function applyDarkMode() {
-  document.documentElement.classList.add('dlsite-dark-mode');
+  document.documentElement.classList.add('rj-bridge-dark-mode');
 
   if (!styleElement) {
     styleElement = document.createElement('style');
@@ -188,7 +188,7 @@ function applyDarkMode() {
 }
 
 function removeDarkMode() {
-  document.documentElement.classList.remove('dlsite-dark-mode');
+  document.documentElement.classList.remove('rj-bridge-dark-mode');
   
   if (styleElement) {
     styleElement.remove();

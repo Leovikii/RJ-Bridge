@@ -1,6 +1,6 @@
 <template>
   <a 
-    class="dlsite-plus-link-btn"
+    class="rj-bridge-link-btn"
     :class="[`theme-${theme}`, { 'is-disabled': disabled }]"
     :href="disabled ? undefined : href"
     :target="disabled ? undefined : '_blank'" 
@@ -49,7 +49,7 @@ defineProps<{
 </script>
 
 <style scoped>
-.dlsite-plus-link-btn {
+.rj-bridge-link-btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -64,13 +64,13 @@ defineProps<{
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
-.dlsite-plus-link-btn:not(.is-disabled):hover {
+.rj-bridge-link-btn:not(.is-disabled):hover {
   transform: translateY(-1px) scale(1.01);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
   filter: brightness(1.1);
 }
 
-.dlsite-plus-link-btn:not(.is-disabled):active {
+.rj-bridge-link-btn:not(.is-disabled):active {
   transform: scale(0.96);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   filter: brightness(0.95);
@@ -98,22 +98,22 @@ defineProps<{
 }
 
 /* --- Disabled State --- */
-.dlsite-plus-link-btn.is-disabled {
+.rj-bridge-link-btn.is-disabled {
   background-color: rgba(255, 255, 255, 0.05);
   box-shadow: none;
   cursor: not-allowed;
 }
 
-.dlsite-plus-link-btn.is-disabled .logo-dot,
-.dlsite-plus-link-btn.is-disabled .logo-text {
+.rj-bridge-link-btn.is-disabled .logo-dot,
+.rj-bridge-link-btn.is-disabled .logo-text {
   fill: rgba(255, 255, 255, 0.2);
 }
 
-.dlsite-plus-link-btn.is-disabled .icon-wrapper {
+.rj-bridge-link-btn.is-disabled .icon-wrapper {
   background: transparent;
 }
 
-.dlsite-plus-link-btn.is-disabled .action-icon {
+.rj-bridge-link-btn.is-disabled .action-icon {
   color: rgba(255, 255, 255, 0.2);
 }
 
