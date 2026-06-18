@@ -16,7 +16,7 @@
 首先，请在浏览器中安装用户脚本管理器，强烈推荐使用 [Tampermonkey (油猴)](https://www.tampermonkey.net/)。然后，选择以下任意一种方式安装：
 
 - **方式 A：通过 GreasyFork 安装（推荐）**
-  点击 **[此处 - GreasyFork 脚本安装链接 (待更新)](#)** 安装，支持后续自动更新。
+  点击 **[此处](https://greasyfork.org/zh-CN/scripts/583340-rj-bridge)** 安装，支持后续自动更新。
 
 - **方式 B：通过 GitHub Release 安装**
   点击 **[此处](https://github.com/Leovikii/RJ-Bridge/releases/latest/download/rj-bridge.user.js)** 安装由 GitHub Actions 全自动打包的最新主线版本。

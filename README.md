@@ -20,7 +20,7 @@
 First, install a user script manager such as [Tampermonkey](https://www.tampermonkey.net/). Then, choose one of the following methods to install RJ-Bridge:
 
 - **Method A: Install via GreasyFork (Recommended)**
-  Click **[Here - GreasyFork Installation Link (Placeholder)](#)** to install and get automatic updates.
+  Click **[Here](https://greasyfork.org/scripts/583340-rj-bridge)** to install and get automatic updates.
 
 - **Method B: Install via GitHub Release**
   Click **[Here](https://github.com/Leovikii/RJ-Bridge/releases/latest/download/rj-bridge.user.js)** to install the latest build directly from our GitHub Actions CI/CD.
