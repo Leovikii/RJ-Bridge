@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)" />
+  <text x="29" y="44" font-family="Arial, 'Helvetica Neue', Helvetica, sans-serif" font-weight="900" font-style="italic" font-size="36" fill="#ffffff" text-anchor="middle" letter-spacing="-1">RJ</text>
+</svg>

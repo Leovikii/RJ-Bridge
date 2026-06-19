@@ -1,4 +1,4 @@
-# RJ号折跃门 (中文说明)
+# <img src="./assets/icon.svg" width="36" height="36" /> RJ号折跃门 (中文说明)
 
 **RJ号折跃门** 是一款专为南+（South Plus）论坛设计的极客风油猴脚本。它以 RJ 号为魔法媒介，无缝串联了 DLsite 的元数据网络以及 ASMR ONE 的在线视听资源。
 

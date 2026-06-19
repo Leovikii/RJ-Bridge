@@ -1,4 +1,4 @@
-# RJ Warp Gate
+# <img src="./assets/icon.svg" width="36" height="36" /> RJ Warp Gate
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
