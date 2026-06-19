@@ -10,17 +10,18 @@
 
 ## 🌟 Features
 
-- **Click Previews**: Click on any RJ code on South Plus to instantly view a modern, glassmorphism popup containing DLsite metadata (Cover Image, Title, Tags, Voice Actors, Sales, etc.).
-- **ASMR ONE Integration**: Provides one-click direct links to listen to ASMR works on ASMR ONE for free.
-- **Native Dark Mode**: Beautifully overrides South Plus styles to provide a highly customized, native dark mode experience that perfectly complements the glass popup UI.
-- **Auto-Localization**: Adapts to Simplified Chinese, Traditional Chinese, and English automatically.
+- **Metadata Preview Card**: Click any RJ code in the forum to instantly preview DLsite metadata via an immersive card, including cover art, title, voice actors, tags, and sales data.
+- **DLsite Global FAB**: Automatically injected into DLsite work pages, enabling cross-site search to quickly find related ASMR ONE streams and South Plus forum discussions.
+- **ASMR ONE Integration**: Features a built-in redirection engine with a one-click shortcut to ASMR ONE online streaming pages.
+- **Native Dark Mode**: Includes a built-in dark mode for South Plus forums to ensure a consistent visual experience that perfectly matches the popup UI.
+- **Auto-Localization**: The interface automatically adapts between English, Simplified Chinese, and Traditional Chinese based on your browser environment.
 
 ## 🚀 Installation
 
 First, install a user script manager such as [Tampermonkey](https://www.tampermonkey.net/). Then, choose one of the following methods to install RJ Warp Gate:
 
-- **Method A: Install via GreasyFork (Recommended)**
-  Click **[Here](https://greasyfork.org/scripts/583340-rj-warp-gate)** to install and get automatic updates.
+- **Method A: Install via SleazyFork (Recommended)**
+  Click **[Here](https://sleazyfork.org/zh-CN/scripts/583340-rj-warp-gate)** to install and get automatic updates.
 
 - **Method B: Install via GitHub Release**
   Click **[Here](https://github.com/Leovikii/RJ-Warp-Gate/releases/latest/download/rj-warp-gate.user.js)** to install the latest build directly from our GitHub Actions CI/CD.

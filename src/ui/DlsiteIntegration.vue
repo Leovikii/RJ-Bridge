@@ -37,13 +37,14 @@
     <!-- FAB Trigger -->
     <div 
       class="fab-trigger" 
-      :class="{ 'is-clickable': isClickable, 'is-loading': isLoading }"
+      :class="{ 'is-clickable': isClickable, 'is-loading': isLoading, 'is-error': isError }"
       @click="togglePanel"
     >
       <div class="fab-content">
         <span class="fab-logo">🪐</span>
         <div class="fab-status">
-          <span v-if="asmrOneState === 'loading' || spState === 'loading'" class="status-icon blink">⏳ {{ t.searching }}</span>
+          <span v-if="isLoading" class="status-icon blink">⏳ {{ t.searching }}</span>
+          <span v-else-if="isError" class="status-icon error" title="点击强制重试">⚠️ 检索失败</span>
           <template v-else>
             <span v-if="!hasAnyResource" class="status-icon empty">{{ t.noResource }}</span>
             <template v-else>
@@ -98,17 +99,9 @@ const spState = ref<'loading' | 'success' | 'empty' | 'error'>('loading');
 const results = ref<SouthPlusSearchResult[]>([]);
 const errorMessage = ref('');
 
-onMounted(async () => {
-  // Bind click outside listener
-  document.addEventListener('click', handleClickOutside);
-
-  // Fire both searches in parallel
-  WorkPromise.checkAsmrOne(props.rjCode).then(url => {
-    asmrOneUrl.value = url;
-    asmrOneState.value = url ? 'success' : 'empty';
-  });
-
-  searchSouthPlus(props.rjCode).then(response => {
+function fetchSouthPlus(force = false) {
+  spState.value = 'loading';
+  searchSouthPlus(props.rjCode, force).then(response => {
     if (response.isCooldown || !response.success) {
       spState.value = 'error';
       errorMessage.value = response.errorMsg || '检索失败';
@@ -121,6 +114,19 @@ onMounted(async () => {
       spState.value = 'success';
     }
   });
+}
+
+onMounted(async () => {
+  // Bind click outside listener
+  document.addEventListener('click', handleClickOutside);
+
+  // Fire both searches in parallel
+  WorkPromise.checkAsmrOne(props.rjCode).then(url => {
+    asmrOneUrl.value = url;
+    asmrOneState.value = url ? 'success' : 'empty';
+  });
+
+  fetchSouthPlus(false);
 });
 
 onUnmounted(() => {
@@ -128,10 +134,16 @@ onUnmounted(() => {
 });
 
 const isLoading = computed(() => asmrOneState.value === 'loading' || spState.value === 'loading');
+const isError = computed(() => spState.value === 'error');
 const hasAnyResource = computed(() => asmrOneUrl.value !== null || results.value.length > 0);
-const isClickable = computed(() => !isLoading.value && hasAnyResource.value);
+const isClickable = computed(() => !isLoading.value && (hasAnyResource.value || isError.value));
 
 function togglePanel() {
+  if (isLoading.value) return;
+  if (isError.value) {
+    fetchSouthPlus(true); // Force retry bypasses cache
+    return;
+  }
   if (isClickable.value) {
     isExpanded.value = !isExpanded.value;
   }
@@ -224,6 +236,11 @@ function togglePanel() {
 .status-icon.sp {
   color: #a78bfa;
   background: rgba(167, 139, 250, 0.15);
+}
+
+.status-icon.error {
+  color: #fca5a5;
+  background: rgba(248, 113, 113, 0.15);
 }
 
 .status-icon.empty {

@@ -20,11 +20,13 @@ export default defineConfig({
         author: 'Leovikii',
         license: 'MIT',
         description: {
-          '': 'Extract RJ codes on South Plus forums, automatically fetch and display DLSite work information, and provide ASMR ONE links.',
-          'zh': '在南+论坛提取并高亮RJ号，自动获取并显示DLsite元数据，并提供ASMR ONE在线试听资源链接。',
-          'zh-CN': '在南+论坛提取并高亮RJ号，自动获取并显示DLsite元数据，并提供ASMR ONE在线试听资源链接。',
-          'zh-TW': '在南+論壇提取並高亮RJ號，自動獲取並顯示DLsite元數據，並提供ASMR ONE在線試聽資源連結。'
+          '': 'Extract RJ codes on South Plus forums, fetch DLSite metadata, and provide ASMR ONE links. Also adds a floating global FAB on DLsite to search for resources on ASMR ONE and South Plus.',
+          'zh': '在南+论坛提取并高亮RJ号，自动获取并显示DLsite元数据，并提供ASMR ONE在线试听资源链接。同时在 DLsite 作品页提供全局悬浮舱，可一键在 ASMR ONE 及南+中跨站检索资源。',
+          'zh-CN': '在南+论坛提取并高亮RJ号，自动获取并显示DLsite元数据，并提供ASMR ONE在线试听资源链接。同时在 DLsite 作品页提供全局悬浮舱，可一键在 ASMR ONE 及南+中跨站检索资源。',
+          'zh-TW': '在南+論壇提取並高亮RJ號，自動獲取並顯示DLsite元數據，並提供ASMR ONE在線試聽資源連結。同時在 DLsite 作品頁提供全局懸浮艙，可一鍵在 ASMR ONE 及南+中跨站檢索資源。'
         },
+        homepageURL: 'https://sleazyfork.org/zh-CN/scripts/583340-rj-warp-gate',
+        supportURL: 'https://sleazyfork.org/zh-CN/scripts/583340-rj-warp-gate/feedback',
         match: [
           '*://*.south-plus.net/*',
           '*://*.spring-plus.net/*',

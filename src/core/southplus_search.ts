@@ -15,7 +15,35 @@ export interface SouthPlusSearchResponse {
 /**
  * Perform a background search on South Plus.
  */
-export async function searchSouthPlus(rjCode: string): Promise<SouthPlusSearchResponse> {
+export async function searchSouthPlus(rjCode: string, force = false): Promise<SouthPlusSearchResponse> {
+  const cacheKey = `sp_cache_${rjCode.toUpperCase()}`;
+  
+  // 1. Local Cache Check
+  if (!force && typeof GM_getValue !== "undefined") {
+    const cached: any = await GM_getValue(cacheKey);
+    // Cache valid for 12 hours
+    if (cached && Date.now() - cached.time < 12 * 3600 * 1000) {
+      return cached.data;
+    }
+  }
+
+  // 2. Cross-Tab Rate Limiting Queue
+  // South+ has a strict search cooldown (usually 15 seconds).
+  // We use GM_getValue as a global mutex/lock to queue searches across all open DLsite tabs.
+  if (typeof GM_getValue !== "undefined" && typeof GM_setValue !== "undefined") {
+    while (true) {
+      const lastSearch = (await GM_getValue('sp_last_search_time', 0)) as number;
+      const now = Date.now();
+      // Minimum 16 seconds gap to be safe
+      if (now - lastSearch >= 16000) {
+        await GM_setValue('sp_last_search_time', now);
+        break;
+      }
+      // Wait for 1-2 seconds and check again
+      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
+    }
+  }
+
   // Use the last active domain from the user's forum browsing
   // Fallback to south-plus.net
   const domain = (typeof GM_getValue !== "undefined") 
@@ -102,7 +130,9 @@ export async function searchSouthPlus(rjCode: string): Promise<SouthPlusSearchRe
             }
 
             if (postHtml.includes('抱歉，没有找到匹配结果') || postHtml.includes('没有查找匹配的内容')) {
-              return resolve({ success: true, results: [] });
+              const emptyResponse = { success: true, results: [] };
+              if (typeof GM_setValue !== "undefined") GM_setValue(cacheKey, { data: emptyResponse, time: Date.now() });
+              return resolve(emptyResponse);
             }
 
             // Parse results robustly
@@ -169,7 +199,9 @@ export async function searchSouthPlus(rjCode: string): Promise<SouthPlusSearchRe
               results.push({ title, url, author, date });
             });
 
-            resolve({ success: true, results });
+            const finalResponse = { success: true, results };
+            if (typeof GM_setValue !== "undefined") GM_setValue(cacheKey, { data: finalResponse, time: Date.now() });
+            resolve(finalResponse);
           },
           onerror: (err: any) => {
             console.error(`[RJ-Warp-Gate] POST error:`, err);
