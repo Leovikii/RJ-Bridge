@@ -9,17 +9,13 @@ export function initDLSiteInjector() {
 
   const rjCode = match[1].toUpperCase();
 
-  // Find injection point (the title area)
-  // On DLsite, the title is usually an h1 with id "work_name"
-  const titleEl = document.getElementById('work_name');
-  if (!titleEl) return;
+  // Prevent double injection
+  if (document.getElementById('rj-warp-gate-dlsite-mount')) return;
 
-  // Create mount point
+  // We use a global fixed FAB, so we can mount it directly to the body!
   const mountPoint = document.createElement('div');
   mountPoint.id = 'rj-warp-gate-dlsite-mount';
-  
-  // Insert mount point right after the title
-  titleEl.insertAdjacentElement('afterend', mountPoint);
+  document.body.appendChild(mountPoint);
 
   // Mount the Vue app
   const app = createApp(DlsiteIntegration, {

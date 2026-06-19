@@ -1,278 +1,363 @@
 <template>
-  <div class="rj-warp-gate-dlsite-container">
-    <div class="dlsite-btn-group">
-      <!-- ASMR ONE Button -->
-      <a
-        class="rj-dlsite-btn theme-asmrone"
-        :class="{ 'is-disabled': !asmrOneUrl }"
-        :href="asmrOneUrl || undefined"
-        :target="asmrOneUrl ? '_blank' : undefined"
-        :title="asmrOneUrl ? '在 ASMR ONE 试听' : 'ASMR ONE 暂无该资源'"
-      >
-        <span class="icon">🎧</span>
-        <span class="text">{{ asmrOneUrl ? 'ASMR ONE 试听' : 'ASMR ONE 暂无' }}</span>
-      </a>
-
-      <!-- South Plus Search Button -->
-      <button
-        class="rj-dlsite-btn theme-southplus"
-        :class="stateClass"
-        @click="handleSearch"
-        :disabled="searchState === 'loading'"
-      >
-        <span class="icon">{{ stateIcon }}</span>
-        <span class="text">{{ stateText }}</span>
-      </button>
-    </div>
-
-    <!-- Results Dropdown -->
-    <transition name="dropdown">
-      <div v-if="showResults && results.length > 0" class="results-dropdown">
-        <div class="results-header">
-          <span>共找到 {{ results.length }} 个相关帖子</span>
-          <button class="close-btn" @click="showResults = false">×</button>
+  <div class="rj-fab-container" :class="{ 'is-expanded': isExpanded }" ref="fabContainerRef">
+    
+    <!-- Expanded Panel -->
+    <transition name="panel-slide">
+      <div v-show="isExpanded" class="fab-panel">
+        <div class="panel-header">
+          <span>{{ t.title }}</span>
+          <button class="close-btn" @click.stop="isExpanded = false">×</button>
         </div>
-        <ul class="results-list">
-          <li v-for="(result, index) in results" :key="index">
-            <a :href="result.url" target="_blank" class="result-link">
-              <span class="result-title">{{ result.title }}</span>
-              <span class="result-meta" v-if="result.author">{{ result.author }} · {{ result.date }}</span>
-            </a>
-          </li>
-        </ul>
+        
+        <div class="panel-body">
+          <!-- ASMR ONE Button -->
+          <LinkButton 
+            v-if="asmrOneUrl"
+            theme="asmrone"
+            :href="asmrOneUrl"
+            :title="t.asmrOne"
+          />
+
+          <!-- South Plus Results -->
+          <div class="southplus-section" v-if="results.length > 0">
+            <div class="sp-header">🔍 {{ t.spResources }} ({{ results.length }})</div>
+            <ul class="results-list">
+              <li v-for="(result, index) in results" :key="index">
+                <a :href="result.url" target="_blank" class="result-link">
+                  <span class="result-title">{{ result.title }}</span>
+                  <span class="result-meta" v-if="result.author">{{ result.author }} · {{ result.date }}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </transition>
+
+    <!-- FAB Trigger -->
+    <div 
+      class="fab-trigger" 
+      :class="{ 'is-clickable': isClickable, 'is-loading': isLoading }"
+      @click="togglePanel"
+    >
+      <div class="fab-content">
+        <span class="fab-logo">🪐</span>
+        <div class="fab-status">
+          <span v-if="asmrOneState === 'loading' || spState === 'loading'" class="status-icon blink">⏳ {{ t.searching }}</span>
+          <template v-else>
+            <span v-if="!hasAnyResource" class="status-icon empty">{{ t.noResource }}</span>
+            <template v-else>
+              <span v-if="asmrOneUrl" class="status-icon asmr">
+                🎧 
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="check-icon">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </span>
+              <span v-if="results.length > 0" class="status-icon sp">🔍 {{ results.length }}</span>
+            </template>
+          </template>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { searchSouthPlus, SouthPlusSearchResult } from '../core/southplus_search';
 import { WorkPromise } from '../core/scraper';
+import LinkButton from './components/LinkButton.vue';
+import { localize } from '../config/localization';
+
+const t = {
+  title: localize('rj_warp_gate_title'),
+  searching: localize('searching'),
+  noResource: localize('no_resources'),
+  spResources: localize('southplus_resources'),
+  asmrOne: localize('go_to_asmrone'),
+};
 
 const props = defineProps<{
   rjCode: string;
 }>();
 
-const searchState = ref<'idle' | 'loading' | 'success' | 'empty' | 'error'>('idle');
-const results = ref<SouthPlusSearchResult[]>([]);
-const errorMessage = ref('');
-const showResults = ref(false);
+const isExpanded = ref(false);
+const fabContainerRef = ref<HTMLElement | null>(null);
+
+function handleClickOutside(event: MouseEvent) {
+  if (isExpanded.value && fabContainerRef.value && !fabContainerRef.value.contains(event.target as Node)) {
+    isExpanded.value = false;
+  }
+}
+
+const asmrOneState = ref<'loading' | 'success' | 'empty'>('loading');
 const asmrOneUrl = ref<string | null>(null);
 
+const spState = ref<'loading' | 'success' | 'empty' | 'error'>('loading');
+const results = ref<SouthPlusSearchResult[]>([]);
+const errorMessage = ref('');
+
 onMounted(async () => {
-  asmrOneUrl.value = await WorkPromise.checkAsmrOne(props.rjCode);
+  // Bind click outside listener
+  document.addEventListener('click', handleClickOutside);
+
+  // Fire both searches in parallel
+  WorkPromise.checkAsmrOne(props.rjCode).then(url => {
+    asmrOneUrl.value = url;
+    asmrOneState.value = url ? 'success' : 'empty';
+  });
+
+  searchSouthPlus(props.rjCode).then(response => {
+    if (response.isCooldown || !response.success) {
+      spState.value = 'error';
+      errorMessage.value = response.errorMsg || '检索失败';
+      return;
+    }
+    if (response.results.length === 0) {
+      spState.value = 'empty';
+    } else {
+      results.value = response.results;
+      spState.value = 'success';
+    }
+  });
 });
 
-const stateIcon = computed(() => {
-  switch (searchState.value) {
-    case 'idle': return '🔍';
-    case 'loading': return '⏳';
-    case 'success': return '✅';
-    case 'empty': return '❌';
-    case 'error': return '⚠️';
-  }
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
 });
 
-const stateText = computed(() => {
-  switch (searchState.value) {
-    case 'idle': return '检测 南+ 资源';
-    case 'loading': return '正在潜入南+检索...';
-    case 'success': return `找到 ${results.value.length} 个结果 (点击展开)`;
-    case 'empty': return '南+ 暂无该资源';
-    case 'error': return errorMessage.value || '搜索失败';
-  }
-});
+const isLoading = computed(() => asmrOneState.value === 'loading' || spState.value === 'loading');
+const hasAnyResource = computed(() => asmrOneUrl.value !== null || results.value.length > 0);
+const isClickable = computed(() => !isLoading.value && hasAnyResource.value);
 
-const stateClass = computed(() => {
-  return `state-${searchState.value}`;
-});
-
-async function handleSearch() {
-  if (searchState.value === 'success') {
-    showResults.value = !showResults.value;
-    return;
-  }
-  
-  if (searchState.value === 'loading') return;
-
-  searchState.value = 'loading';
-  showResults.value = false;
-
-  const response = await searchSouthPlus(props.rjCode);
-
-  if (response.isCooldown) {
-    searchState.value = 'error';
-    errorMessage.value = response.errorMsg || '论坛技能冷却中 (需间隔十几秒)';
-    return;
-  }
-
-  if (!response.success) {
-    searchState.value = 'error';
-    errorMessage.value = '网络或解析错误';
-    return;
-  }
-
-  if (response.results.length === 0) {
-    searchState.value = 'empty';
-  } else {
-    results.value = response.results;
-    searchState.value = 'success';
-    showResults.value = true;
+function togglePanel() {
+  if (isClickable.value) {
+    isExpanded.value = !isExpanded.value;
   }
 }
 </script>
 
 <style scoped>
-.rj-warp-gate-dlsite-container {
-  margin: 12px 0;
+.rj-fab-container {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  position: relative;
+  align-items: flex-end;
 }
 
-.dlsite-btn-group {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.rj-dlsite-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: none;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  color: #ffffff;
-  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  outline: none;
-}
-
-.rj-dlsite-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  filter: brightness(1.1);
-}
-
-.rj-dlsite-btn:active {
-  transform: translateY(0);
-}
-
-.theme-asmrone {
-  background: linear-gradient(135deg, #51d8cf 0%, #29b8ac 100%);
-}
-
-.theme-southplus {
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-}
-
-/* States for SouthPlus Button */
-.theme-southplus.state-loading {
-  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
-  cursor: wait;
-}
-
-.theme-southplus.state-success {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-}
-
-.theme-southplus.state-empty {
-  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
-}
-
-.theme-southplus.state-error {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-}
-
-/* Disabled State */
-.rj-dlsite-btn.is-disabled {
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.3);
-  box-shadow: none;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-/* Results Dropdown */
-.results-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 12px;
-  width: 550px;
-  max-width: 90vw;
-  
-  background-color: rgba(30, 30, 30, 0.85);
+/* FAB Trigger */
+.fab-trigger {
+  background: rgba(30, 30, 30, 0.85);
   backdrop-filter: blur(12px) saturate(120%);
   -webkit-backdrop-filter: blur(12px) saturate(120%);
-  
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 8px 10px rgba(0, 0, 0, 0.2);
-  
-  overflow: hidden;
-  z-index: 2147483646;
-  
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  color: #f1f5f9;
+  border-radius: 30px;
+  padding: 8px 16px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  user-select: none;
 }
 
-.results-header {
+.fab-trigger.is-clickable {
+  cursor: pointer;
+}
+
+.fab-trigger.is-clickable:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+  background: rgba(45, 45, 45, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.fab-trigger.is-clickable:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.fab-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fab-logo {
+  font-size: 20px;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+.fab-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.status-icon {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  gap: 4px; /* Add gap between emoji and SVG */
+}
+
+.check-icon {
+  width: 12px;
+  height: 12px;
+  margin-left: 2px;
+}
+
+.status-icon.asmr {
+  color: #51d8cf;
+  background: rgba(81, 216, 207, 0.15);
+}
+
+.status-icon.sp {
+  color: #a78bfa;
+  background: rgba(167, 139, 250, 0.15);
+}
+
+.status-icon.empty {
+  color: #9ca3af;
+  font-weight: normal;
+}
+
+.blink {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* Expanded Panel */
+.fab-panel {
+  position: absolute;
+  bottom: calc(100% + 16px);
+  right: 0;
+  width: 400px;
+  max-width: 90vw;
+  background-color: rgba(25, 25, 25, 0.95);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 13px;
-  font-weight: 600;
-  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: 0.5px;
 }
 
 .close-btn {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background: transparent;
+  color: #94a3b8;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 16px;
   transition: all 0.2s ease;
 }
 
 .close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.panel-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Premium Buttons */
+.rj-premium-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.rj-premium-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.15);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.theme-asmrone {
+  background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+}
+
+/* South Plus Section */
+.southplus-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sp-header {
+  font-size: 13px;
+  font-weight: 600;
+  color: #a78bfa;
+  padding-left: 4px;
 }
 
 .results-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 350px;
+  max-height: 250px;
   overflow-y: auto;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Scrollbar for list */
 .results-list::-webkit-scrollbar {
   width: 6px;
 }
 .results-list::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.02);
 }
 .results-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 3px;
 }
 
@@ -287,37 +372,41 @@ async function handleSearch() {
 .result-link {
   display: flex;
   flex-direction: column;
-  padding: 10px 12px;
+  padding: 12px;
   text-decoration: none;
   transition: background 0.2s;
 }
 
 .result-link:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .result-title {
-  color: #60a5fa;
+  color: #e2e8f0;
   font-size: 13px;
   line-height: 1.4;
   margin-bottom: 4px;
 }
 
+.result-link:hover .result-title {
+  color: #60a5fa;
+}
+
 .result-meta {
-  color: #9ca3af;
+  color: #94a3b8;
   font-size: 11px;
 }
 
 /* Animations */
-.dropdown-enter-active,
-.dropdown-leave-active {
+.panel-slide-enter-active,
+.panel-slide-leave-active {
   transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  transform-origin: top right;
+  transform-origin: bottom right;
 }
 
-.dropdown-enter-from,
-.dropdown-leave-to {
+.panel-slide-enter-from,
+.panel-slide-leave-to {
   opacity: 0;
-  transform: scaleY(0.95);
+  transform: scale(0.95) translateY(10px);
 }
 </style>
