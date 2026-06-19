@@ -486,11 +486,19 @@ export const WorkPromise = {
             throw new Error("无法获取文件大小信息");
         },
 
-    checkAsmrOne: async function (rjCode: string): Promise<string | null> {
+    checkAsmrOne: async function (rjCode: string, force = false): Promise<string | null> {
             const p: any = WorkPromise.getWorkPromise(rjCode);
-            if (p._asmrone !== undefined) return p._asmrone;
+            if (!force && p._asmrone !== undefined) return p._asmrone;
 
-            p._asmrone = new Promise((resolve) => {
+            p._asmrone = new Promise(async (resolve) => {
+                const cacheKey = `asmr_cache_${rjCode.toUpperCase()}`;
+                if (!force && typeof GM_getValue !== "undefined") {
+                    const cached: any = await GM_getValue(cacheKey);
+                    if (cached && Date.now() - cached.time < 24 * 3600 * 1000) {
+                        return resolve(cached.data);
+                    }
+                }
+
                 const rjNumber = rjCode.toUpperCase().replace('RJ', '');
                 const apiUrl = `https://api.asmr-200.com/api/work/${rjNumber}`;
                 
@@ -499,10 +507,13 @@ export const WorkPromise = {
                     method: 'GET',
                     url: apiUrl,
                     headers: { "Referer": "https://www.asmr.one/" },
-                    onload: function(response) {
+                    onload: async function(response) {
                         if (response.status === 200) {
-                            resolve(`https://www.asmr.one/work/${rjCode.toUpperCase()}`);
+                            const url = `https://www.asmr.one/work/${rjCode.toUpperCase()}`;
+                            if (typeof GM_setValue !== "undefined") await GM_setValue(cacheKey, { data: url, time: Date.now() });
+                            resolve(url);
                         } else {
+                            if (typeof GM_setValue !== "undefined") await GM_setValue(cacheKey, { data: null, time: Date.now() });
                             resolve(null);
                         }
                     },

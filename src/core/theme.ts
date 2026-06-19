@@ -34,8 +34,11 @@ const darkThemeCss = `
   html.rj-warp-gate-dark-mode .t_two,
   html.rj-warp-gate-dark-mode .r_one,
   html.rj-warp-gate-dark-mode .r_two,
+  html.rj-warp-gate-dark-mode .tr3,
   html.rj-warp-gate-dark-mode .tr3 td,
+  html.rj-warp-gate-dark-mode .tr2,
   html.rj-warp-gate-dark-mode .tr2 td,
+  html.rj-warp-gate-dark-mode .tr1,
   html.rj-warp-gate-dark-mode .tr1 td,
   html.rj-warp-gate-dark-mode .tpc_content,
   html.rj-warp-gate-dark-mode .read_t,
@@ -50,7 +53,12 @@ const darkThemeCss = `
   html.rj-warp-gate-dark-mode .u-table th,
   html.rj-warp-gate-dark-mode .bgA,
   html.rj-warp-gate-dark-mode #u-top,
-  html.rj-warp-gate-dark-mode #u-top-nav {
+  html.rj-warp-gate-dark-mode #u-top-nav,
+  html.rj-warp-gate-dark-mode .gonggao,
+  html.rj-warp-gate-dark-mode #cate_thread,
+  html.rj-warp-gate-dark-mode .dcsns-li,
+  html.rj-warp-gate-dark-mode .dcsns-li .inner,
+  html.rj-warp-gate-dark-mode .section-text {
     background: #1e1e1e !important;
     background-color: #1e1e1e !important;
     border-color: #333 !important;
@@ -67,7 +75,9 @@ const darkThemeCss = `
   html.rj-warp-gate-dark-mode .pages,
   html.rj-warp-gate-dark-mode .pagesone,
   html.rj-warp-gate-dark-mode .u-h1,
-  html.rj-warp-gate-dark-mode .u-h5 {
+  html.rj-warp-gate-dark-mode .u-h5,
+  html.rj-warp-gate-dark-mode .gongul,
+  html.rj-warp-gate-dark-mode .gongul li {
     background: #2a2a2a !important;
     background-color: #2a2a2a !important;
     border-color: #444 !important;
@@ -99,11 +109,13 @@ const darkThemeCss = `
   html.rj-warp-gate-dark-mode [style*="background: #fff"],
   html.rj-warp-gate-dark-mode [style*="background: white"],
   html.rj-warp-gate-dark-mode [style*="background:#fff"],
+  html.rj-warp-gate-dark-mode [style*="background-color: grey"],
   html.rj-warp-gate-dark-mode [bgcolor="#ffffff"],
   html.rj-warp-gate-dark-mode [bgcolor="#fff"],
   html.rj-warp-gate-dark-mode blockquote,
   html.rj-warp-gate-dark-mode .blockquote,
-  html.rj-warp-gate-dark-mode .quote {
+  html.rj-warp-gate-dark-mode .quote,
+  html.rj-warp-gate-dark-mode .section-intro {
     background: #2d2d2d !important;
     background-color: #2d2d2d !important;
     border-color: #444 !important;
@@ -119,6 +131,16 @@ const darkThemeCss = `
     background-color: #2a2a2a !important;
     color: #e5e7eb !important;
     border: 1px solid #444 !important;
+  }
+
+  /* 8. 修复刺眼的纯蓝色字体为适合暗色的亮蓝色 (包括标题、发帖内容等所有地方) */
+  html.rj-warp-gate-dark-mode font[color="#0000FF" i],
+  html.rj-warp-gate-dark-mode font[color="blue" i],
+  html.rj-warp-gate-dark-mode [style*="color: #0000FF" i],
+  html.rj-warp-gate-dark-mode [style*="color:#0000FF" i],
+  html.rj-warp-gate-dark-mode [style*="color: blue" i],
+  html.rj-warp-gate-dark-mode [style*="color:blue" i] {
+    color: #60a5fa !important;
   }
 `;
 

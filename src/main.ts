@@ -3,16 +3,22 @@ import { Parser } from "./core/parser";
 import { Popup } from "./ui/popup";
 import { Csp } from "./utils/csp";
 import { initThemeManager } from "./core/theme";
+import { initDLSiteInjector } from "./core/dlsite_injector";
 
 // Initialize dark mode as early as possible (run-at: document-start)
-initThemeManager();
+if (!document.location.hostname.includes("dlsite.com")) {
+    if (typeof GM_setValue !== "undefined") {
+        GM_setValue("last_forum_domain", document.location.hostname);
+    }
+    initThemeManager();
+}
 
 export let isInit = false;
 export let observing = false;
 
 export function init() {
-    if (document.location.hostname.endsWith("dlsite.com")) {
-        console.log("[RJ-Warp-Gate] Disabled on DLSite to avoid layout conflicts.");
+    if (document.location.hostname.includes("dlsite.com")) {
+        initDLSiteInjector();
         return;
     }
 

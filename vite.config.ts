@@ -20,18 +20,22 @@ export default defineConfig({
         author: 'Leovikii',
         license: 'MIT',
         description: {
-          '': 'Extract RJ codes on South Plus forums, automatically fetch and display DLSite work information, and provide ASMR ONE links.',
-          'zh': '在南+论坛提取并高亮RJ号，自动获取并显示DLsite元数据，并提供ASMR ONE在线试听资源链接。',
-          'zh-CN': '在南+论坛提取并高亮RJ号，自动获取并显示DLsite元数据，并提供ASMR ONE在线试听资源链接。',
-          'zh-TW': '在南+論壇提取並高亮RJ號，自動獲取並顯示DLsite元數據，並提供ASMR ONE在線試聽資源連結。'
+          '': 'Injects bidirectional cross-site resource search into South Plus and DLsite, featuring detailed metadata preview cards and one-click redirection to ASMR ONE.',
+          'zh': '为南+论坛和 DLsite 注入双向资源检索与高亮功能，提供详尽的元数据预览卡片及 ASMR ONE 在线试听一键跳转。',
+          'zh-CN': '为南+论坛和 DLsite 注入双向资源检索与高亮功能，提供详尽的元数据预览卡片及 ASMR ONE 在线试听一键跳转。',
+          'zh-TW': '為南+論壇和 DLsite 注入雙向資源檢索與高亮功能，提供詳盡的元數據預覽卡片及 ASMR ONE 在線試聽一鍵跳轉。'
         },
+        homepageURL: 'https://sleazyfork.org/zh-CN/scripts/583340-rj-warp-gate',
+        supportURL: 'https://sleazyfork.org/zh-CN/scripts/583340-rj-warp-gate/feedback',
         match: [
           '*://*.south-plus.net/*',
           '*://*.spring-plus.net/*',
           '*://*.level-plus.net/*',
+          '*://*.dlsite.com/*',
+          '*://*.dlsite.com.tw/*',
         ],
-        icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='64' y2='64' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0%25' stop-color='%23f472b6'/%3E%3Cstop offset='100%25' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-weight='900' font-size='32' fill='%23fff' text-anchor='middle' letter-spacing='1'%3ERJ%3C/text%3E%3C/svg%3E",
-        version: '1.0.0',
+        icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%238b5cf6'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23bg)'/%3E%3Ctext x='29' y='44' font-family='Arial,sans-serif' font-weight='900' font-style='italic' font-size='36' fill='%23ffffff' text-anchor='middle' letter-spacing='-1'%3ERJ%3C/text%3E%3C/svg%3E",
+        version: '1.1.0',
         connect: [
           'dlsite.com',
           'media.ci-en.jp',
